@@ -1,0 +1,8 @@
+*.env*
+!.env.example
+
+# node
+node_modules
+
+# jroject
+data
