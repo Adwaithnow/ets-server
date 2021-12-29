@@ -14,7 +14,7 @@ const morgan = require('morgan')
 app.use(morgan('tiny'))
 app.use(express.json());
 app.use(fileUpload({
-    useTempFiles : true,
+    useTempFiles : false,
     tempFileDir : '/tmp/',
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
@@ -32,7 +32,9 @@ app.post(
         if(req.files){
             console.log(req.files, 'koko');
             const filetemp=uuidv1();
-            req.files.file.mv('./data/'+filetemp)
+            const tmpl = req.files.file.name.split('.')
+            const extension = tmpl[tmpl.length-1]
+            req.files.file.mv('./data/'+filetemp + '.' + extension)
         }
         res.send('ok')
     }

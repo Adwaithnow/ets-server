@@ -57,7 +57,7 @@ def build_similarity_matrix(sentences, stop_words):
     return similarity_matrix
 
 
-def generate_summary(file_name, top_n=5):
+def generate_summary(file_name, top_n=2):
     stop_words = stopwords.words('english')
     summarize_text = []
 
@@ -79,13 +79,16 @@ def generate_summary(file_name, top_n=5):
       summarize_text.append(" ".join(ranked_sentence[i][1]))
 
     # Step 5 - Offcourse, output the summarize texr
-    print( ". ".join(summarize_text))
-    # sys.stdout(summarize_text)
+    print(". ".join(summarize_text))
+    # print(type(". ".join(summarize_text)))
+    # sys.stdout(". ".join(summarize_text))
+    # return ". ".join(summarize_text)
+    # print("OK")
 
 # let's begin
 summy=sys.argv
 if(len(summy)>1):
-    print(sys.argv[1])
-    print(generate_summary(summy[1], 2))
+    # print(sys.argv[1])
+    generate_summary(summy[1])
 else:
     print("No argument")
