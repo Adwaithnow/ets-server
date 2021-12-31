@@ -24,7 +24,7 @@ router.put(
             const filename=uuidv1()+"."+extension
             req.files.file.mv('./data/'+filename)
             // console.log(filename)
-            const child = spawn('python',['./python/ExtractText.py','../data/'+filename]);
+            const child = spawn('python3',['./python/ExtractText.py','../data/'+filename]);
             child.stdout.on('data', (data) => {
                  summary = data.toString();
                 //parse
