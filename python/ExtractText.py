@@ -2,18 +2,27 @@ import textract
 import json
 import sys
 def GetText(path):
-    text = textract.process(path, encoding='utf8', method='tesseract')
-    print(path)
-    text = text.decode("utf8")
-    text = text.replace("\n", "")
-    # print(text)
-    res={
-        "Response":200,
-        "File":path,
-        "data":text
-    }
-    print(json.dumps(res))
-    sys.stdout.flush()
+    try:
+        text = textract.process(path, encoding='utf8', method='tesseract')
+        print(path)
+        text = text.decode("utf8")
+        text = text.replace("\n", "")
+        # print(text)
+        res={
+            "Response":200,
+            "File":path,
+            "data":text
+        }
+        print(json.dumps(res))
+        sys.stdout.flush()
+    except:
+        res={
+            "Response":500,
+            "File":path,
+            "data": "error"
+        }
+        print(json.dumps(res))
+        sys.stdout.flush()
 if(len(sys.argv)>1):
     GetText(sys.argv[1])
 else:
