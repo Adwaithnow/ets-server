@@ -8,17 +8,17 @@ def GetText(path):
         text = text.decode("utf8")
         text = text.replace("\n", "")
         # print(text)
+            # "File":path,
+
         res={
-            "Response":200,
-            "File":path,
+            "message":200,
             "data":text
         }
         print(json.dumps(res))
         sys.stdout.flush()
     except:
         res={
-            "Response":500,
-            "File":path,
+            "message":500,
             "data": "error"
         }
         print(json.dumps(res))
