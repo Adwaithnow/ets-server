@@ -1,5 +1,5 @@
 const jwt=require("jsonwebtoken")
-
+//AUTHORIZATION SYSTEM FOR ADMIN AS WELL AS USERS
 const verifyToken=(req,res,next)=>{
     const authHeader=req.headers.token 
     if(authHeader)
