@@ -3,7 +3,7 @@ const User = require("../models/User");
 const { verifyToken } = require("./verifyToken");
 
 const router=require("express").Router();
-
+//UPDATE USER
 router.put("/:id",verifyToken,async (req,res)=>{
   if(req.body.password)
   {

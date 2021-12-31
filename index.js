@@ -1,13 +1,14 @@
+//importing  libraries
 const express=require("express");
 const fileUpload = require("express-fileupload")
 const app=express();
 const mongoose=require("mongoose");
 const dotenv=require("dotenv");
+//importing routes
 const userRoute=require("./routes/user");
 const authRoute=require("./routes/auth");
 const summyRoute=require("./routes/summy");
-const {v1: uuidv1} = require('uuid');
-const { verifyTokenAuthazrization } = require("./routes/verifyToken");
+const extractRoute=require("./routes/extract");
 
 dotenv.config();
 const morgan = require('morgan')
@@ -25,21 +26,7 @@ mongoose.connect(process.env.MONGO_URL)
 app.use("/user",userRoute);
 app.use("/auth",authRoute);
 app.use("/summy",summyRoute);
-
-app.post(
-    '/test/file-upload',verifyTokenAuthazrization,
-    (req, res) => {
-        if(req.files){
-            console.log(req.files, 'koko');
-            const filetemp=uuidv1();
-            const tmpl = req.files.file.name.split('.')
-            const extension = tmpl[tmpl.length-1]
-            req.files.file.mv('./data/'+filetemp + '.' + extension)
-        }
-        res.send('ok')
-    }
-)
-
+app.use("/extracttext",extractRoute);
 
 app.listen(process.env.PORT || 3000,()=>{
     console.log("Server is running!");
