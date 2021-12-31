@@ -12,32 +12,26 @@ router.put(
             let summary = '';
         let mysummary={};
         if(req.files){
-            // console.log(req.files, 'koko');
-            // const filetemp=uuidv1();
-            const file=req.files.file;
-            const mime=file.mimetype;
-            const index=mime.indexOf("/")+1;
-            // console.log(file.name);
-            // const tmpl = req.files.file.name.split('.')
-            // const extension = tmpl[tmpl.length-1]
-            const extension=mime.slice(index);
+            console.log(req.files.file.name, 'koko');
+            const tmpl = req.files.file.name.split('.')
+            const extension = tmpl[tmpl.length-1]
             const filename=uuidv1()+"."+extension
             req.files.file.mv('./data/'+filename)
-            // console.log(filename)
-            const child = spawn('python3',['./python/ExtractText.py','../data/'+filename]);
+
+            const child = spawn('python',['./python/ExtractText.py','./data/'+filename]);
             child.stdout.on('data', (data) => {
-                 summary = data.toString();
-                //parse
+                summary = data.toString();
+                console.log(filename, summary)
                 mysummary=JSON.parse(summary).data
                 res.status(200).send({ mysummary })
               });
         }
         else{
-            res.status(500).send({ "message":"ERROR" })
+            res.status(500).send({ "message":"NO FILE ERROR" })
         }
             
         } catch (error) {
-            res.status(500).send({ "message":"ERROR" })
+            res.status(500).send({ "message": error.toString() })
         }
     }
 )
@@ -46,3 +40,16 @@ module.exports=router
 
 
 
+
+
+/*
+
+            // const filetemp=uuidv1();
+            // const file=req.files.file;
+            // const mime=file.mimetype;
+            // const index=mime.indexOf("/")+1;
+            // console.log(file.name);
+
+            
+            // const extension=mime.slice(index);
+*/
