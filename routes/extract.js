@@ -26,10 +26,10 @@ router.put(
                     if (fs.existsSync(paths)) {
                         fs.unlink(paths, function (err) {
                             if (err) throw err;
-                            res.status(200).send("DELETED")
+                            // res.status(200).send("DELETED")
                         });
                     }
-                    // res.status(200).send({ myextracted })
+                    res.status(200).send({ myextracted })
                 });
             }
             else {
