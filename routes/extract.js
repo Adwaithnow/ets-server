@@ -1,41 +1,47 @@
-const router=require("express").Router();
-const {v1: uuidv1} = require('uuid');
+const router = require("express").Router();
+const fs = require('fs');
+const { v1: uuidv1 } = require('uuid');
 const { verifyTokenAuthazrization } = require("./verifyToken");
 const { spawn } = require('child_process');
-const { json } = require("express/lib/response");
 
 
 router.put(
-    '/',verifyTokenAuthazrization,
-     (req, res) => {
+    '/', verifyTokenAuthazrization,
+    (req, res) => {
         try {
-            let summary = '';
-        let mysummary={};
-        if(req.files){
-            console.log(req.files.file.name, 'koko');
-            const tmpl = req.files.file.name.split('.')
-            const extension = tmpl[tmpl.length-1]
-            const filename=uuidv1()+"."+extension
-            req.files.file.mv('./data/'+filename)
+            let extracted = '';
+            let myextracted = {};
+            if (req.files) {
+                console.log(req.files.file.name, 'koko');
+                const tmpl = req.files.file.name.split('.')
+                const extension = tmpl[tmpl.length - 1]
+                const filename = uuidv1() + "." + extension
+                req.files.file.mv('./data/' + filename)
+                const paths = './data/' + filename
+                const child = spawn('python', ['./python/ExtractText.py', paths]);
+                child.stdout.on('data', (data) => {
+                    extracted = data.toString();
+                    console.log(filename, extracted)
+                    myextracted = JSON.parse(extracted).data
+                    if (fs.existsSync(paths)) {
+                        fs.unlink(paths, function (err) {
+                            if (err) throw err;
+                            res.status(200).send("DELETED")
+                        });
+                    }
+                    // res.status(200).send({ myextracted })
+                });
+            }
+            else {
+                res.status(500).send({ "message": "NO FILE ERROR" })
+            }
 
-            const child = spawn('python',['./python/ExtractText.py','./data/'+filename]);
-            child.stdout.on('data', (data) => {
-                summary = data.toString();
-                console.log(filename, summary)
-                mysummary=JSON.parse(summary).data
-                res.status(200).send({ mysummary })
-              });
-        }
-        else{
-            res.status(500).send({ "message":"NO FILE ERROR" })
-        }
-            
         } catch (error) {
             res.status(500).send({ "message": error.toString() })
         }
     }
 )
-module.exports=router
+module.exports = router
 
 
 

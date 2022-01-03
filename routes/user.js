@@ -1,10 +1,26 @@
 const req = require("express/lib/request");
 const User = require("../models/User");
-const { verifyToken } = require("./verifyToken");
+const SummyModel = require('../models/summary')
+const { verifyTokenAuthazrization } = require("./verifyToken");
 
 const router=require("express").Router();
-//UPDATE USER
-router.put("/:id",verifyToken,async (req,res)=>{
+
+//GET SUMMARY
+router.get('/history/summary', verifyTokenAuthazrization, async (req, res) => {
+  try {
+    const summyHistory = await SummyModel.find(
+      {
+        user: req.user.id,
+      }
+    ).limit(5);
+    res.send(summyHistory);
+  } catch (error) {
+    res.status(500).json(error)
+  }
+})
+
+//UPDATE USER DETAILS
+router.put("/:id",verifyTokenAuthazrization ,async (req,res)=>{
   if(req.body.password)
   {
     req.body.password= CryptoJS.AES.encrypt(req.body.password, process.env.SECRET).toString();

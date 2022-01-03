@@ -3,8 +3,8 @@ from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
 import sys
+import json
 
- 
 def read_article(file_name):
     file = open(file_name, "r")
     filedata = file.readlines()
@@ -63,6 +63,8 @@ def generate_summary(file_name, top_n=2):
 
     # Step 1 - Read text anc split it
     sentences =  read_article(file_name)
+    # argu =  json.loads(sys.argv[1])
+    # sentences=argu.summary
 
     # Step 2 - Generate Similary Martix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
@@ -77,18 +79,31 @@ def generate_summary(file_name, top_n=2):
 
     for i in range(top_n):
       summarize_text.append(" ".join(ranked_sentence[i][1]))
-
+    # print(summarize_text)
     # Step 5 - Offcourse, output the summarize texr
-    print(". ".join(summarize_text))
-    # print(type(". ".join(summarize_text)))
-    # sys.stdout(". ".join(summarize_text))
-    # return ". ".join(summarize_text)
-    # print("OK")
+    # print(". ".join(summarize_text))
+    text=". ".join(summarize_text)
+    res={
+            "message":200,
+            "data":text
+        }
+    print(json.dumps(res))
+    sys.stdout.flush()
+    
 
 # let's begin
-summy=sys.argv
-if(len(summy)>1):
-    # print(sys.argv[1])
-    generate_summary(summy[1])
-else:
-    print("No argument")
+try:
+    summy=sys.argv
+    if(len(summy)>1):
+        # print(sys.argv[1])
+        generate_summary(summy[1])
+    else:
+        print("No argument")
+except:
+    res={
+            "message":200,
+            "data":"SOMETHING WENT WRONG WITH PYTHON"
+        }
+    print(json.dumps(res))
+    sys.stdout.flush()
+    

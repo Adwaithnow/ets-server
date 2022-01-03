@@ -9,6 +9,8 @@ const userRoute=require("./routes/user");
 const authRoute=require("./routes/auth");
 const summyRoute=require("./routes/summy");
 const extractRoute=require("./routes/extract");
+const deletemeRoute=require("./routes/deleteme.js");
+
 
 dotenv.config();
 const morgan = require('morgan')
@@ -27,6 +29,8 @@ app.use("/user",userRoute);
 app.use("/auth",authRoute);
 app.use("/summy",summyRoute);
 app.use("/extracttext",extractRoute);
+app.use("/deleteme",deletemeRoute);
+
 
 app.listen(process.env.PORT || 3000,()=>{
     console.log("Server is running!");
