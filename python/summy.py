@@ -3,7 +3,7 @@ from nltk.cluster.util import cosine_distance
 import numpy as np
 import networkx as nx
 import sys
-import json
+import json as jn
 
 def read_article(file_name):
     file = open(file_name, "r")
@@ -56,7 +56,6 @@ def build_similarity_matrix(sentences, stop_words):
 
     return similarity_matrix
 
-
 def generate_summary(file_name, top_n=2):
     stop_words = stopwords.words('english')
     summarize_text = []
@@ -78,7 +77,7 @@ def generate_summary(file_name, top_n=2):
     #print("Indexes of top ranked_sentence order are ", ranked_sentence)    
 
     for i in range(top_n):
-      summarize_text.append(" ".join(ranked_sentence[i][1]))
+        summarize_text.append(" ".join(ranked_sentence[i][1]))
     # print(summarize_text)
     # Step 5 - Offcourse, output the summarize texr
     # print(". ".join(summarize_text))
@@ -87,23 +86,21 @@ def generate_summary(file_name, top_n=2):
             "message":200,
             "data":text
         }
-    print(json.dumps(res))
+    print(jn.dumps(res))
     sys.stdout.flush()
-    
 
-# let's begin
 try:
-    summy=sys.argv
-    if(len(summy)>1):
-        # print(sys.argv[1])
-        generate_summary(summy[1])
+    summypath=sys.argv
+    if(len(summypath)>1):
+        # print(su)
+        generate_summary(summypath[1],2)
     else:
         print("No argument")
-except:
+except Exception as e:
     res={
             "message":200,
-            "data":"SOMETHING WENT WRONG WITH PYTHON"
+            "data":e
         }
-    print(json.dumps(res))
+    print(jn.dumps(res))
     sys.stdout.flush()
     

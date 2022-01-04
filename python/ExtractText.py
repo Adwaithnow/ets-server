@@ -22,6 +22,7 @@ def GetText(path):
         }
         print(json.dumps(res))
         sys.stdout.flush()
+
 if(len(sys.argv)>1):
     GetText(sys.argv[1])
 else:
@@ -30,17 +31,3 @@ else:
         "data":sys.argv
     }
     print(json.dumps(res))
-# import time
-  
-# i = 0 
-
-# def notify():
-
-# while(True):
-#     notify()
-#     time.sleep(60*5)
-#     print(i)
-#     i=i+1
-
-#add cool graphics based on performance for motivation..
-#that is once you figure out to interact with that toast

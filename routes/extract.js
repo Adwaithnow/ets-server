@@ -21,7 +21,7 @@ router.put(
                 const child = spawn('python', ['./python/ExtractText.py', paths]);
                 child.stdout.on('data', (data) => {
                     extracted = data.toString();
-                    console.log(filename, extracted)
+                    // console.log(filename, extracted)
                     myextracted = JSON.parse(extracted).data
                     if (fs.existsSync(paths)) {
                         fs.unlink(paths, function (err) {

@@ -28,7 +28,7 @@ router.post("/", verifyTokenAuthazrization, async (req, res) => {
             // console.log('summary:', req.body.summary);
             const texttofile = req.body.summary
             const filename = uuidv1() + "." + "txt"
-            const paths = './data/text/' + filename
+            const paths = './python/texttmp/' + filename
             console.log(paths);
             fs.appendFile(paths, texttofile, function (err) {
                 if (err) throw err;
