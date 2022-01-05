@@ -5,4 +5,8 @@
 node_modules
 
 # jroject
-data
+data/*
+!data/.gitkeep
+
+python/texttmp/*
+!python/texttmp/.gitkeep
