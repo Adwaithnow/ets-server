@@ -34,7 +34,7 @@ router.post("/", verifyTokenAuthazrization, async (req, res) => {
                 if (err) throw err;
                 console.log('Saved!', err);
             });
-            const child = spawn('python', ['./python/summy.py', paths]);
+            const child = spawn(process.env.PYTHON_BINARY || 'python', ['./python/summy.py', paths]);
                 child.stdout.on('data', async (data) => {
                     extracted = data.toString();
                     // console.log('safe',filename, extracted)

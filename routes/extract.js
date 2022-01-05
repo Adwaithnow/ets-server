@@ -18,7 +18,7 @@ router.put(
                 const filename = uuidv1() + "." + extension
                 req.files.file.mv('./data/' + filename)
                 const paths = './data/' + filename
-                const child = spawn('python', ['./python/ExtractText.py', paths]);
+                const child = spawn(process.env.PYTHON_BINARY || 'python', ['./python/ExtractText.py', paths]);
                 child.stdout.on('data', (data) => {
                     extracted = data.toString();
                     // console.log(filename, extracted)
