@@ -35,25 +35,54 @@ router.post("/", verifyTokenAuthazrization, async (req, res) => {
                 console.log('Saved!', err);
             });
             const child = spawn(process.env.PYTHON_BINARY || 'python', ['./python/summy.py', paths]);
-                child.stdout.on('data', async (data) => {
-                    extracted = data.toString();
-                    // console.log('safe',filename, extracted)
-                    myextracted = JSON.parse(extracted).data
-                    newsummy.summary = myextracted;
-                    if (fs.existsSync(paths)) {
-                        fs.unlink(paths, function (err) {
-                            if (err) throw err;
-                            // res.status(200).send("DELETED")
-                        });
-                    }
-                    const savedSummy = await newsummy.save()
-                    res.status(200).send(savedSummy)
-                });
+            child.stdout.on('data', async (data) => {
+                extracted = data.toString();
+                // console.log('safe',filename, extracted)
+                myextracted = JSON.parse(extracted).data
+                newsummy.summary = myextracted;
+                if (fs.existsSync(paths)) {
+                    fs.unlink(paths, function (err) {
+                        if (err) throw err;
+                        // res.status(200).send("DELETED")
+                    });
+                }
+                const savedSummy = await newsummy.save()
+                res.status(200).send(savedSummy)
+            });
             // res.status(201).json( extracted);
         }
     } catch (error) {
         res.status(500).json(error.message || "Somethinge Went wrong");
     }
 });
+
+//update summary
+router.put("/update/:id",verifyTokenAuthazrization, async(req, res) => {
+    try {
+        if (req.body.summary == "" || req.body.title == "") {
+            res.status(500).json("Title and text are mandatory!");
+        }
+        else {
+        const updatedSummary = await summary.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                user: req.user.id,
+            },
+            {
+                $set: {
+                    title: req.body.title,
+                    summary: req.body.summary
+                }
+            },
+            {
+                new: true,
+            }
+        );
+        res.status(200).json(updatedSummary);
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
 
 module.exports = router
