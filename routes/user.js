@@ -12,7 +12,7 @@ router.get('/history/summary', verifyTokenAuthazrization, async (req, res) => {
       {
         user: req.user.id,
       }
-    ).limit(5);
+    ).sort({createdAt: -1}).limit(50);
     res.send(summyHistory);
   } catch (error) {
     res.status(500).json(error)
