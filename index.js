@@ -4,6 +4,7 @@ const fileUpload = require("express-fileupload")
 const app=express();
 const mongoose=require("mongoose");
 const dotenv=require("dotenv");
+const cors = require('cors')
 //importing routes
 const userRoute=require("./routes/user");
 const authRoute=require("./routes/auth");
@@ -16,6 +17,7 @@ dotenv.config();
 const morgan = require('morgan')
 app.use(morgan('tiny'))
 app.use(express.json());
+app.use(cors());
 // Add headers before the routes are defined
 app.use(function (req, res, next) {
 
