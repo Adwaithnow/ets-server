@@ -57,29 +57,44 @@ router.post("/", verifyTokenAuthazrization, async (req, res) => {
 });
 
 //update summary
-router.put("/update/:id",verifyTokenAuthazrization, async(req, res) => {
+router.put("/update/:id", verifyTokenAuthazrization, async (req, res) => {
     try {
         if (req.body.summary == "" || req.body.title == "") {
             res.status(500).json("Title and text are mandatory!");
         }
         else {
-        const updatedSummary = await summary.findOneAndUpdate(
+            const updatedSummary = await summary.findOneAndUpdate(
+                {
+                    _id: req.params.id,
+                    user: req.user.id,
+                },
+                {
+                    $set: {
+                        title: req.body.title,
+                        summary: req.body.summary
+                    }
+                },
+                {
+                    new: true,
+                }
+            );
+            res.status(200).json(updatedSummary);
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+router.delete("/delete/:id", verifyTokenAuthazrization, async (req, res) => {
+    try {
+        const deletes = await summary.findOneAndDelete(
             {
                 _id: req.params.id,
                 user: req.user.id,
-            },
-            {
-                $set: {
-                    title: req.body.title,
-                    summary: req.body.summary
-                }
-            },
-            {
-                new: true,
             }
         );
-        res.status(200).json(updatedSummary);
-        }
+        res.status(200).json(deletes);
+
     } catch (error) {
         res.status(500).json(error)
     }
